@@ -1147,11 +1147,11 @@ export default function Home() {
                 <div className="stage-placeholder">
                   <div className="stage-placeholder__copy">
                     <span className="eyebrow">Live canvas</span>
-                    <h2>{selectedModel.name}</h2>
+                    <h2>{generation.status === "ERROR" ? "Generation Error" : selectedModel.name}</h2>
                     <p>
-                      Preview besar ini akan menampilkan hasil render aktif. Saat
-                      task selesai, Anda bisa simpan ke library lokal dan download
-                      langsung lewat tombol aksi.
+                      {generation.error || (generation.status === "ERROR" 
+                        ? "Terjadi kesalahan saat memproses atau memeriksa status video." 
+                        : "Preview besar ini akan menampilkan hasil render aktif. Saat task selesai, Anda bisa simpan ke library lokal dan download langsung lewat tombol aksi.")}
                     </p>
                   </div>
 
