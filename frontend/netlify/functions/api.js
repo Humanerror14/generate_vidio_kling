@@ -93,15 +93,6 @@ const modelRegistry = {
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json({ limit: "20mb" }));
 
-// Normalize path: strip /.netlify/functions/api prefix if present
-// so routes always match under /api/*
-app.use((req, _res, next) => {
-  const fnPrefix = "/.netlify/functions/api";
-  if (req.url.startsWith(fnPrefix)) {
-    req.url = "/api" + req.url.slice(fnPrefix.length) || "/api";
-  }
-  next();
-});
 
 function getModelConfig(modelId) {
   return modelRegistry[modelId] || modelRegistry[defaultModel] || modelRegistry["kling-v3-std"];
@@ -793,6 +784,10 @@ router.post("/webhooks/freepik", async (request, response, next) => {
   }
 });
 
+// Netlify strips /.netlify/functions/api from path → function receives /health, /assets etc.
+// Local dev backend receives /api/health, /api/assets etc.
+// Mount router at BOTH / and /api to support both environments.
+app.use("/", router);
 app.use("/api", router);
 
 app.use((error, _request, response, _next) => {
