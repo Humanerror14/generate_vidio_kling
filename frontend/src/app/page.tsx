@@ -1276,7 +1276,7 @@ export default function Home() {
 
                 <button
                   className="button-primary button-primary--wide"
-                  disabled={isSubmitting || !health.freepikConfigured}
+                  disabled={isSubmitting || (!health.freepikConfigured && !apiKey.trim())}
                   onClick={() => void handleGenerate()}
                   type="button"
                 >
