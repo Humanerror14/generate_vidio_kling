@@ -1079,17 +1079,19 @@ export default function Home() {
           <div className="header-actions">
             <div
               className={`status-pill status-pill--${
-                health.online && health.freepikConfigured ? "success" : "danger"
+                health.online ? "success" : "danger"
               }`}
             >
-              {health.online && health.freepikConfigured ? (
+              {health.online ? (
                 <BadgeCheck size={16} />
               ) : (
                 <AlertCircle size={16} />
               )}
               <span>
-                {health.online && health.freepikConfigured
-                  ? "Freepik connected"
+                {health.online
+                  ? health.freepikConfigured 
+                    ? "Freepik connected" 
+                    : "Backend Online (Ready)"
                   : health.message ?? "Backend offline"}
               </span>
             </div>
