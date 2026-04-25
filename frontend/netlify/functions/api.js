@@ -140,20 +140,13 @@ function normalizeFreepikError(payload, fallbackMessage) {
   return fallbackMessage;
 }
 
-function normalizeDurationForModel(modelConfig, duration) {
-  if (modelConfig.mode === "runway-image") {
-    return runwayDurations.includes(String(duration)) ? String(duration) : "5";
-  }
-
-  return String(duration);
-}
 function normalizeDurationForModel(modelConfig, requestedDuration) {
   const duration = String(requestedDuration);
   if (modelConfig.mode === "runway-image") {
-    // Runway 4.5 usually supports 5, 8, 10
+    // Runway 4.5 supports 5, 8, 10
     return ["5", "8", "10"].includes(duration) ? duration : "5";
   }
-  // Kling usually supports 5, 10
+  // Kling supports 5, 10
   return ["5", "10"].includes(duration) ? duration : "5";
 }
 
