@@ -1,0 +1,61 @@
+C:\Users\ASUS\Documents\Codex\2026-04-25\files-mentioned-by-the-user-screenshot-2\backend\src\index.js:458
+  } catch (error) {
+    ^^^^^
+
+SyntaxError: Unexpected token 'catch'
+    at wrapSafe (node:internal/modules/cjs/loader:1477:18)
+    at Module._compile (node:internal/modules/cjs/loader:1520:20)
+    at Object..js (node:internal/modules/cjs/loader:1698:10)
+    at Module.load (node:internal/modules/cjs/loader:1303:32)
+    at Function._load (node:internal/modules/cjs/loader:1117:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49
+
+Node.js v23.3.0
+Freepik API Error: {
+  status: 404,
+  pathname: '/v1/ai/video/kling-v3',
+  payload: { message: 'Tasks not found' }
+}
+Freepik Resource Not Found (404): /v1/ai/video/kling-v3-omni
+Freepik Resource Not Found (404): /v1/ai/video/kling-v3-motion-control-pro
+illing'
+  }
+}
+Freepik API Error: {
+  status: 429,
+  pathname: '/v1/ai/image-to-video/runway-4-5',
+  payload: {
+    message: 'Hello! You have reached the limit of the free trial usage. You can upgrade to a paid plan here: https://www.freepik.com/developers/dashboard/billing'
+  }
+}
+Freepik API Error: {
+  status: 429,
+  pathname: '/v1/ai/image-to-video/runway-4-5',
+  payload: {
+    message: 'Hello! You have reached the limit of the free trial usage. You can upgrade to a paid plan here: https://www.freepik.com/developers/dashboard/billing'
+  }
+}
+Freepik API Error: {
+  status: 429,
+  pathname: '/v1/ai/image-to-video/runway-4-5',
+  payload: {
+    message: 'Hello! You have reached the limit of the free trial usage. You can upgrade to a paid plan here: https://www.freepik.com/developers/dashboard/billing'
+  }
+}
+Freepik API Error: {
+  status: 429,
+  pathname: '/v1/ai/video/kling-v3-std',
+  payload: {
+    message: 'Hello! You have reached the limit of the free trial usage. You can upgrade to a paid plan here: https://www.freepik.com/developers/dashboard/billing'
+  }
+}
+Freepik API Error: {
+  status: 429,
+  pathname: '/v1/ai/video/kling-v3-std',
+  payload: {
+    message: 'Hello! You have reached the limit of the free trial usage. You can upgrade to a paid plan here: https://www.freepik.com/developers/dashboard/billing'
+  }
+}

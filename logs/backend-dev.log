@@ -1,0 +1,191 @@
+
+> backend@1.0.0 dev
+> nodemon src/index.js
+
+[33m[nodemon] 3.1.14[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] rest[32m[nodemon] restarting due [32m[nodemon] star[32m[nodemon] starting `node ◇ injected env (5◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: true }
+Freepik backend listening on http://localhost:4000[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: tru◇ Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] rest[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodem[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip:◇ injected env (5) from .env // tip: ⌘Freepik backend listening on htFreepik backend list[32m[nodemon] clean exit - wai[32m[nodemon] restarting due to chan[32m[nodemo[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] r[32m[nodemon] restarting due to [32m[nodemon] s[32m[nodemon] starting `node src◇ injected env◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: true }
+Freepik backend listening on http://localh[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ override existing { override: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] resta[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node◇ injected env (5)◇ injected env (5) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Freepik backend li[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ override existing { override: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before resta[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean [32m[nodemon] restarting due to changes...[39[[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+[31m[nodemon] app crashed - waiting for file changes before starting...[39[32m[nodemon] restarting due to changes...[39m
+[[32m[nodemon] starting `node src/index.js`[39◇ injected env (5) from .env // tip: ⌘ enable debugging { debug: true }
+Freepik backend lFreepik backend listening on http:[32m[nodemon] cl[32m[nodemon] clean exit - waiting for changes bef[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] [32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.[32m[nod◇ injected env (5) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injecte◇ injected env (5) from .env // tip: ◈ encrypted .env [www.doFreepik bacFreepik backend listening on http://loca[32m[nodem[32m[nodemon] clean exit - waiting for changes before re[32m[nodem[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/inde[32m[nodem◇ injected env (5) from .env // tip:◇ injected env (5) from .env // tip: ⌘ multiple fFreepik backend listening on http://loFreepik backeSubmitting to Freepik: { model: 'Runway 4.5 Image', payloadSize: 135967, hasKey: true }
+Submitting to Freepik: { model: 'Runway 4.5 Image', payloadSize: 135967, hasKey: true }
+Submitting to Freepik: { model: 'Runway 4.5 Image', payloadSize: 135986, hasKey: true }
+Submitting to Free[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Freepik backend listening on http://localhost:4000
+Submitting to Freepik: { model: 'Runway 4.5 Image', payloadSize: 135990, hasKey: true }
+Submitting to Freepik: { model: 'Runway 4.5 Image', payloadSize: 135972, hasKey: true }
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ override existing { override: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: true }
+Freepik backend listenin◇ injected env (5) from .[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ suppress logs { quiet: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ enable debugging { debug: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Freepik backend listening on http://localhost:4000
+Submitting to Freepik: {
+  model: 'Runway 4.5 Image',
+  payloadSize: 136342,
+  hasKey: true,
+  isMotionControl: false,
+  hasImageUrl: true,
+  hasVideoUrl: false,
+  promptSnippet: 'Cinematic medium shot of a young woman dancing in '
+}
+Submitting to Freepik: {
+  model: 'Kling 3 Motion Control Pro',
+  payloadSize: 624,
+  hasKey: true,
+  isMotionControl: true,
+  hasImageUrl: true,
+  hasVideoUrl: true,
+  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
+}
+Submitting to Freepik: {
+  model: 'Kling 3 Motion Control Pro',
+  payloadSize: 624,
+  hasKey: true,
+  isMotionControl: true,
+  hasImageUrl: true,
+  hasVideoUrl: true,
+  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
+}
+Submitting to Freepik: {
+  model: 'Kling 3 Motion Control Pro',
+  payloadSize: 624,
+  hasKey: true,
+  isMotionControl: true,
+  hasImageUrl: true,
+  hasVideoUrl: true,
+  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
+}
+Submitting to Freepik: {
+  model: 'Runway 4.5 Image',
+  payloadSize: 136310,
+  hasKey: true,
+  isMotionControl: false,
+  hasImageUrl: true,
+  hasVideoUrl: false,
+  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
+}
