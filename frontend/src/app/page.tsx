@@ -521,6 +521,7 @@ export default function Home() {
   async function requestTaskStatus(taskId: string, model: ModelId, customApiKey?: string) {
     const url = new URL(`${backendBaseUrl}/video/tasks/${taskId}`);
     url.searchParams.append("model", model);
+    url.searchParams.append("t", Date.now().toString()); // Cache busting
     if (customApiKey) {
       url.searchParams.append("apiKey", customApiKey);
     }
@@ -530,12 +531,13 @@ export default function Home() {
     });
 
     if (!response.ok) {
-      if (response.status === 429 || response.status === 401) {
-        handleLogout();
-        throw new Error("Sesi berakhir karena limit atau key tidak valid.");
+      const payload = (await response.json()) as { error?: string; message?: string };
+      const errorMessage = payload.message || payload.error || "Gagal memeriksa status task.";
+      
+      if (response.status === 429 || response.status === 401 || errorMessage.toLowerCase().includes("usage")) {
+        throw new Error(`Limit API Habis: ${errorMessage}`);
       }
-      const payload = (await response.json()) as { error?: string };
-      throw new Error(payload.error ?? "Gagal memeriksa status task.");
+      throw new Error(errorMessage);
     }
 
     const payload = (await response.json()) as {
