@@ -312,7 +312,7 @@ async function callFreepik(pathname, options = {}, customApiKey = null) {
       // Quiet log for 404 to avoid confusing the user during task listing
       console.warn(`Freepik Resource Not Found (404): ${pathname}`);
     }
-    
+
     const error = new Error(
       normalizeFreepikError(payload, "Permintaan ke Freepik gagal.")
     );
@@ -487,7 +487,7 @@ app.post("/api/video/generate", async (request, response, next) => {
       if (cameraControl) {
         const { type, value } = cameraControl;
         const config = { horizontal: 0, vertical: 0, zoom: 0, roll: 0 };
-        
+
         if (type === "pan_left") config.horizontal = -5.0;
         else if (type === "pan_right") config.horizontal = 5.0;
         else if (type === "tilt_up") config.vertical = 5.0;
@@ -496,7 +496,7 @@ app.post("/api/video/generate", async (request, response, next) => {
         else if (type === "zoom_out") config.zoom = -5.0;
         else if (type === "roll_cw") config.roll = 5.0;
         else if (type === "roll_ccw") config.roll = -5.0;
-        
+
         payload.camera_control = config;
       }
     }
@@ -765,7 +765,7 @@ app.delete("/api/assets/:assetId", async (request, response, next) => {
 app.post("/api/webhooks/freepik", async (request, response, next) => {
   try {
     const payload = request.body || {};
-    
+
     console.log("Webhook received from Freepik:", {
       taskId: payload.task_id || payload.id,
       status: payload.status,
@@ -774,7 +774,7 @@ app.post("/api/webhooks/freepik", async (request, response, next) => {
 
     // Verify webhook signature if needed (optional - implement based on Freepik docs)
     // For now, we acknowledge receipt and log for debugging
-    
+
     response.status(200).json({
       success: true,
       received: true,
