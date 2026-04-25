@@ -35,7 +35,8 @@ import {
 import { MotionControlForm } from "@/components/MotionControlForm";
 
 const backendBaseUrl =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? 
+  (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "/api" : "http://localhost:4000/api");
 
 const modelCatalog = [
   {
@@ -182,6 +183,9 @@ type SaveState = {
 };
 
 function getBackendOrigin(baseUrl: string) {
+  if (baseUrl.startsWith("/")) {
+    return typeof window !== "undefined" ? window.location.origin : "";
+  }
   try {
     return new URL(baseUrl).origin;
   } catch {
