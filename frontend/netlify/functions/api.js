@@ -28,10 +28,11 @@ const runwayRatioMap = {
 };
 
 const runwayDurations = ["5", "8", "10"];
-const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+const allowedOrigins = (process.env.CORS_ORIGIN || "*")
   .split(",")
   .map((item) => item.trim())
   .filter(Boolean);
+const corsOrigin = allowedOrigins.includes("*") ? true : allowedOrigins;
 
 const durationValues = new Set([
   "3",
@@ -89,12 +90,18 @@ const modelRegistry = {
   },
 };
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-  })
-);
+app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json({ limit: "20mb" }));
+
+// Normalize path: strip /.netlify/functions/api prefix if present
+// so routes always match under /api/*
+app.use((req, _res, next) => {
+  const fnPrefix = "/.netlify/functions/api";
+  if (req.url.startsWith(fnPrefix)) {
+    req.url = "/api" + req.url.slice(fnPrefix.length) || "/api";
+  }
+  next();
+});
 
 function getModelConfig(modelId) {
   return modelRegistry[modelId] || modelRegistry[defaultModel] || modelRegistry["kling-v3-std"];
@@ -787,7 +794,6 @@ router.post("/webhooks/freepik", async (request, response, next) => {
 });
 
 app.use("/api", router);
-app.use("/.netlify/functions/api", router);
 
 app.use((error, _request, response, _next) => {
   if (error?.type === "entity.too.large") {

@@ -3,6 +3,10 @@
   publish = ".next"
   base = "frontend"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
