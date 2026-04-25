@@ -166,26 +166,35 @@ Submitting to Freepik: {
   model: 'Kling 3 Motion Control Pro',
   payloadSize: 624,
   hasKey: true,
-  isMotionControl: true,
-  hasImageUrl: true,
-  hasVideoUrl: true,
-  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
-}
-Submitting to Freepik: {
-  model: 'Kling 3 Motion Control Pro',
-  payloadSize: 624,
-  hasKey: true,
-  isMotionControl: true,
-  hasImageUrl: true,
-  hasVideoUrl: true,
-  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
-}
-Submitting to Freepik: {
-  model: 'Runway 4.5 Image',
-  payloadSize: 136310,
-  hasKey: true,
-  isMotionControl: false,
-  hasImageUrl: true,
-  hasVideoUrl: false,
-  promptSnippet: '"A young woman in a cozy, minimalist bedroom with '
-}
+  isMotionControl: true[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ override existing { override: true }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+nts [www.vestauth.com]
+Freepik backend listening on http://localhost:4000
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node src/index.js`[39m
+◇ injected env (5) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Freepik backend listening on http://localhost:4000

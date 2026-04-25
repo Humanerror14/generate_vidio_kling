@@ -11,6 +11,7 @@ const serverless = require("serverless-http");
 dotenv.config();
 
 const app = express();
+const router = express.Router();
 const port = Number(process.env.PORT || 4000);
 const freepikBaseUrl = process.env.FREEPIK_API_BASE_URL || "https://api.freepik.com";
 const defaultModel = process.env.FREEPIK_VIDEO_MODEL || "kling-v3-std";
@@ -326,7 +327,7 @@ async function callFreepik(pathname, options = {}, customApiKey = null) {
   return payload;
 }
 
-app.get("/api/health", async (_request, response, next) => {
+router.get("/health", async (_request, response, next) => {
   try {
     const assets = await readAssetRecords();
 
@@ -343,7 +344,7 @@ app.get("/api/health", async (_request, response, next) => {
   }
 });
 
-app.post("/api/video/generate", async (request, response, next) => {
+router.post("/video/generate", async (request, response, next) => {
   try {
     const {
       prompt,
@@ -545,7 +546,7 @@ app.post("/api/video/generate", async (request, response, next) => {
   }
 });
 
-app.get("/api/video/tasks", async (request, response, next) => {
+router.get("/video/tasks", async (request, response, next) => {
   try {
     const model = String(request.query.model || defaultModel);
     const selectedModel = getModelConfig(model);
@@ -581,7 +582,7 @@ app.get("/api/video/tasks", async (request, response, next) => {
   }
 });
 
-app.get("/api/video/tasks/:taskId", async (request, response, next) => {
+router.get("/video/tasks/:taskId", async (request, response, next) => {
   try {
     const { taskId } = request.params;
     const model = String(request.query.model || defaultModel);
@@ -616,7 +617,7 @@ app.get("/api/video/tasks/:taskId", async (request, response, next) => {
   }
 });
 
-app.get("/api/assets", async (_request, response, next) => {
+router.get("/assets", async (_request, response, next) => {
   try {
     const records = await readAssetRecords();
     const assets = records
@@ -633,7 +634,7 @@ app.get("/api/assets", async (_request, response, next) => {
   }
 });
 
-app.post("/api/assets/save", async (request, response, next) => {
+router.post("/assets/save", async (request, response, next) => {
   try {
     const {
       taskId,
@@ -715,7 +716,7 @@ app.post("/api/assets/save", async (request, response, next) => {
   }
 });
 
-app.get("/api/assets/:assetId/stream", async (request, response, next) => {
+router.get("/assets/:assetId/stream", async (request, response, next) => {
   try {
     const asset = await getAssetRecordOrThrow(request.params.assetId);
     response.type(asset.contentType || "video/mp4");
@@ -725,7 +726,7 @@ app.get("/api/assets/:assetId/stream", async (request, response, next) => {
   }
 });
 
-app.get("/api/assets/:assetId/download", async (request, response, next) => {
+router.get("/assets/:assetId/download", async (request, response, next) => {
   try {
     const asset = await getAssetRecordOrThrow(request.params.assetId);
     response.download(asset.filePath, asset.fileName);
@@ -734,7 +735,7 @@ app.get("/api/assets/:assetId/download", async (request, response, next) => {
   }
 });
 
-app.delete("/api/assets/:assetId", async (request, response, next) => {
+router.delete("/assets/:assetId", async (request, response, next) => {
   try {
     const assetId = request.params.assetId;
     const records = await readAssetRecords();
@@ -764,7 +765,7 @@ app.delete("/api/assets/:assetId", async (request, response, next) => {
   }
 });
 
-app.post("/api/webhooks/freepik", async (request, response, next) => {
+router.post("/webhooks/freepik", async (request, response, next) => {
   try {
     const payload = request.body || {};
 
@@ -791,6 +792,9 @@ app.post("/api/webhooks/freepik", async (request, response, next) => {
     });
   }
 });
+
+app.use("/api", router);
+app.use("/.netlify/functions/api", router);
 
 app.use((error, _request, response, _next) => {
   if (error?.type === "entity.too.large") {
