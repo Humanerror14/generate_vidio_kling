@@ -1,19 +1,16 @@
 import { type NextRequest, NextResponse } from "next/server";
 import {
   readAssetRecords,
-  writeAssetRecords,
+  writeAssetRecord,
   sanitizeAssetRecord,
   formatPromptTitle,
   safeSlug,
   inferVideoExtension,
-  downloadRemoteVideo,
+  downloadAndUploadVideo,
   modelRegistry,
   defaultModel,
   randomUUID,
-  assetVideoDir,
 } from "@/lib/backend";
-import * as path from "node:path";
-import * as fs from "node:fs/promises";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,8 +36,8 @@ export async function POST(request: NextRequest) {
     const records = await readAssetRecords();
     const existing = records.find(
       (item) =>
-        (taskId && item.taskId === taskId) ||
-        item.remoteVideoUrl === videoUrl.trim()
+          (taskId && item.taskId === taskId) ||
+          item.remoteVideoUrl === videoUrl.trim()
     );
 
     if (existing) {
@@ -56,17 +53,23 @@ export async function POST(request: NextRequest) {
     const title = formatPromptTitle(prompt);
     const assetId = randomUUID();
     const remoteVideoUrl = videoUrl.trim();
-    const tempPath = path.join(assetVideoDir, `${assetId}.download`);
-    const downloadResult = await downloadRemoteVideo(remoteVideoUrl, tempPath);
+    
+    // We don't have the content type yet, so we'll infer extension later or use a generic one for the storage path
+    // Actually, downloadAndUploadVideo needs a filename.
+    const tempFileName = `${assetId}.mp4`;
+    const uploadResult = await downloadAndUploadVideo(remoteVideoUrl, tempFileName);
+    
     const extension = inferVideoExtension(
-      downloadResult.contentType,
+      uploadResult.contentType,
       remoteVideoUrl
     );
     const fileName = `${safeSlug(title)}-${assetId.slice(0, 8)}${extension}`;
-    const filePath = path.join(assetVideoDir, fileName);
-    await fs.rename(tempPath, filePath);
-    const savedAt = new Date().toISOString();
-
+    
+    // If the extension was different, we might want to rename in storage, 
+    // but for now let's just use the final fileName for the actual record.
+    // Let's refine downloadAndUploadVideo to take the final name if possible, 
+    // or just use the assetId based name.
+    
     const assetRecord = {
       id: assetId,
       title,
@@ -81,17 +84,19 @@ export async function POST(request: NextRequest) {
         typeof sourceImageUrl === "string" && sourceImageUrl ? sourceImageUrl : "",
       remoteVideoUrl,
       fileName,
-      filePath,
-      contentType: downloadResult.contentType,
-      sizeBytes: downloadResult.sizeBytes,
-      savedAt,
+      storagePath: uploadResult.storagePath,
+      contentType: uploadResult.contentType,
+      sizeBytes: uploadResult.sizeBytes,
     };
 
-    const nextRecords = [assetRecord, ...records];
-    await writeAssetRecords(nextRecords);
+    await writeAssetRecord(assetRecord);
+
+    // Fetch the record again to get the savedAt timestamp if needed, 
+    // or just return the record with a mocked savedAt for immediate UI feedback.
+    const finalRecord = { ...assetRecord, savedAt: new Date().toISOString() };
 
     return NextResponse.json(
-      { success: true, asset: sanitizeAssetRecord(assetRecord) },
+      { success: true, asset: sanitizeAssetRecord(finalRecord) },
       { status: 201 }
     );
   } catch (err) {

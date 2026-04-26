@@ -1,17 +1,11 @@
 import { randomUUID } from "node:crypto";
-import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import * as os from "node:os";
+import { supabaseAdmin } from "./supabase";
 
 export const freepikBaseUrl =
   process.env.FREEPIK_API_BASE_URL || "https://api.freepik.com";
 export const defaultModel =
   process.env.FREEPIK_VIDEO_MODEL || "kling-v3-std";
-
-const storageRoot = path.join(os.tmpdir(), "freepik-storage");
-export const assetDataDir = path.join(storageRoot, "data");
-export const assetVideoDir = path.join(storageRoot, "videos");
-export const assetDatabasePath = path.join(assetDataDir, "assets.json");
 
 export const modelRegistry: Record<
   string,
@@ -137,35 +131,54 @@ export async function callFreepik(
   return payload;
 }
 
-export async function ensureStorage() {
-  await fs.mkdir(assetDataDir, { recursive: true });
-  await fs.mkdir(assetVideoDir, { recursive: true });
-  try {
-    await fs.access(assetDatabasePath);
-  } catch {
-    await fs.writeFile(assetDatabasePath, "[]\n", "utf8");
-  }
-}
-
 export async function readAssetRecords(): Promise<AssetRecord[]> {
-  await ensureStorage();
-  try {
-    const content = await fs.readFile(assetDatabasePath, "utf8");
-    const parsed = JSON.parse(content);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    await fs.writeFile(assetDatabasePath, "[]\n", "utf8");
+  const { data, error } = await supabaseAdmin
+    .from("assets")
+    .select("*")
+    .order("saved_at", { ascending: false });
+
+  if (error) {
+    console.error("Error reading assets from Supabase:", error);
     return [];
   }
+
+  return (data || []).map(record => ({
+    ...record,
+    savedAt: record.saved_at,
+    taskId: record.task_id,
+    aspectRatio: record.aspect_ratio,
+    sourceKind: record.source_kind,
+    sourceImageUrl: record.source_image_url,
+    remoteVideoUrl: record.remote_video_url,
+    fileName: record.file_name,
+    storagePath: record.storage_path,
+    sizeBytes: record.size_bytes,
+  }));
 }
 
-export async function writeAssetRecords(records: AssetRecord[]) {
-  await ensureStorage();
-  await fs.writeFile(
-    assetDatabasePath,
-    `${JSON.stringify(records, null, 2)}\n`,
-    "utf8"
-  );
+export async function writeAssetRecord(record: Omit<AssetRecord, "savedAt">) {
+  const { error } = await supabaseAdmin.from("assets").insert([
+    {
+      id: record.id,
+      title: record.title,
+      prompt: record.prompt,
+      task_id: record.taskId,
+      model: record.model,
+      aspect_ratio: record.aspectRatio,
+      duration: record.duration,
+      source_kind: record.sourceKind,
+      source_image_url: record.sourceImageUrl,
+      remote_video_url: record.remoteVideoUrl,
+      file_name: record.fileName,
+      storage_path: record.storagePath,
+      content_type: record.contentType,
+      size_bytes: record.sizeBytes,
+    },
+  ]);
+
+  if (error) {
+    throw new Error(`Error writing asset to Supabase: ${error.message}`);
+  }
 }
 
 export type AssetRecord = {
@@ -180,19 +193,24 @@ export type AssetRecord = {
   sourceImageUrl: string;
   remoteVideoUrl: string;
   fileName: string;
-  filePath: string;
+  storagePath: string;
   contentType: string;
   sizeBytes: number;
   savedAt: string;
 };
 
 export function sanitizeAssetRecord(asset: AssetRecord) {
-  const { filePath: _fp, ...rest } = asset;
-  void _fp;
+  const { storagePath, ...rest } = asset;
+  
+  // Get public URL for the video
+  const { data: { publicUrl } } = supabaseAdmin.storage
+    .from("videos")
+    .getPublicUrl(storagePath);
+
   return {
     ...rest,
-    streamUrl: `/api/assets/${asset.id}/stream`,
-    downloadUrl: `/api/assets/${asset.id}/download`,
+    streamUrl: publicUrl,
+    downloadUrl: publicUrl,
   };
 }
 
@@ -230,10 +248,10 @@ export function inferVideoExtension(
   return ".mp4";
 }
 
-export async function downloadRemoteVideo(
+export async function downloadAndUploadVideo(
   remoteUrl: string,
-  targetPath: string
-): Promise<{ contentType: string; sizeBytes: number }> {
+  fileName: string
+): Promise<{ contentType: string; sizeBytes: number; storagePath: string }> {
   const response = await fetch(remoteUrl);
   if (!response.ok) {
     const err = new Error("Gagal mengunduh video dari sumber remote.") as Error & {
@@ -242,10 +260,58 @@ export async function downloadRemoteVideo(
     err.statusCode = response.status;
     throw err;
   }
+  
   const contentType = response.headers.get("content-type") || "video/mp4";
-  const bytes = Buffer.from(await response.arrayBuffer());
-  await fs.writeFile(targetPath, bytes);
-  return { contentType, sizeBytes: bytes.length };
+  const buffer = await response.arrayBuffer();
+
+  const { data, error } = await supabaseAdmin.storage
+    .from("videos")
+    .upload(fileName, buffer, {
+      contentType,
+      upsert: true
+    });
+
+  if (error) {
+    throw new Error(`Error uploading to Supabase Storage: ${error.message}`);
+  }
+
+  return { 
+    contentType, 
+    sizeBytes: buffer.byteLength,
+    storagePath: data.path 
+  };
 }
 
-export { randomUUID };
+export async function deleteAssetRecord(id: string) {
+  // First get the record to find the storage path
+  const { data: record, error: fetchError } = await supabaseAdmin
+    .from("assets")
+    .select("storage_path")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) {
+    throw new Error(`Error fetching asset for deletion: ${fetchError.message}`);
+  }
+
+  if (record?.storage_path) {
+    // Delete from storage
+    const { error: storageError } = await supabaseAdmin.storage
+      .from("videos")
+      .remove([record.storage_path]);
+    
+    if (storageError) {
+      console.warn(`Warning: Failed to delete storage file ${record.storage_path}:`, storageError.message);
+    }
+  }
+
+  // Delete from database
+  const { error: dbError } = await supabaseAdmin
+    .from("assets")
+    .delete()
+    .eq("id", id);
+
+  if (dbError) {
+    throw new Error(`Error deleting asset from database: ${dbError.message}`);
+  }
+}

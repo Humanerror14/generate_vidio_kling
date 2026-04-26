@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { readAssetRecords } from "@/lib/backend";
-import * as fs from "node:fs/promises";
+import { readAssetRecords, sanitizeAssetRecord } from "@/lib/backend";
 
 export async function GET(
   _request: NextRequest,
@@ -18,20 +17,8 @@ export async function GET(
       );
     }
 
-    // Try to stream from local /tmp first, fallback to remote URL redirect
-    try {
-      const fileBytes = await fs.readFile(record.filePath);
-      return new NextResponse(fileBytes, {
-        headers: {
-          "Content-Type": record.contentType || "video/mp4",
-          "Content-Length": String(fileBytes.length),
-          "Accept-Ranges": "bytes",
-        },
-      });
-    } catch {
-      // File not in /tmp (different serverless instance), redirect to remote
-      return NextResponse.redirect(record.remoteVideoUrl);
-    }
+    const { streamUrl } = sanitizeAssetRecord(record);
+    return NextResponse.redirect(streamUrl);
   } catch (err) {
     const e = err as Error;
     return NextResponse.json(
