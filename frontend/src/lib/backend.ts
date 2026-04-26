@@ -1,5 +1,6 @@
-import { randomUUID } from "node:crypto";
-import * as path from "node:path";
+import { randomUUID } from "crypto";
+export { randomUUID };
+import * as path from "path";
 import { supabaseAdmin } from "./supabase";
 
 export const freepikBaseUrl =

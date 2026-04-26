@@ -15,13 +15,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Recommended for Vercel deployment if you have mixed frontend/backend code
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
 };
 
 export default nextConfig;
