@@ -32,6 +32,7 @@ import {
   Volume2,
   WandSparkles,
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 import { MotionControlForm } from "@/components/MotionControlForm";
 
 const backendBaseUrl =
@@ -641,20 +642,30 @@ export default function Home() {
     }
 
     try {
-      const dataUrl = await readFileAsDataUrl(file);
+      // 1. Upload to Supabase Storage first to get a URL
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `temp/${fileName}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('videos')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('videos')
+        .getPublicUrl(filePath);
 
       setUploadedStartImage({
         name: file.name,
-        dataUrl,
+        dataUrl: publicUrl, // We'll use the URL instead of base64
         sizeLabel: formatBytes(file.size),
       });
       setUploadError(null);
       setForm((current) => ({
         ...current,
-        startImageUrl: "",
-        model: "runway-4-5-i2v",
-        duration: normalizeDurationForModel(current.duration, "runway-4-5-i2v"),
-        generateAudio: false,
+        startImageUrl: publicUrl, // Set the URL directly
       }));
     } catch (error) {
       setUploadError(
@@ -704,15 +715,33 @@ export default function Home() {
     }
 
     try {
-      console.log("Reading video file:", file.name, file.size, file.type);
-      const dataUrl = await readFileAsDataUrl(file);
-      console.log("Video file read successfully, length:", dataUrl.length);
+      console.log("Uploading video to Supabase...");
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `temp/${fileName}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('videos')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('videos')
+        .getPublicUrl(filePath);
+
+      console.log("Video uploaded successfully:", publicUrl);
+
       setUploadedVideoReference({
         name: file.name,
-        dataUrl,
+        dataUrl: publicUrl, // Using URL now
         sizeLabel: formatBytes(file.size),
       });
       setUploadError(null);
+      setForm((current) => ({
+        ...current,
+        videoReferenceUrl: publicUrl,
+      }));
     } catch (error) {
       console.error("Video upload error:", error);
       setUploadError("Gagal memuat video.");
