@@ -863,7 +863,10 @@ export default function Home() {
   async function saveCurrentAsset(downloadAfter = false) {
     if (currentSavedAsset) {
       if (downloadAfter) {
-        triggerBrowserDownload(`${backendOrigin}${currentSavedAsset.downloadUrl}`);
+        const downloadUrl = currentSavedAsset.downloadUrl.startsWith("http") 
+          ? currentSavedAsset.downloadUrl 
+          : `${backendOrigin}${currentSavedAsset.downloadUrl}`;
+        triggerBrowserDownload(downloadUrl);
       }
       return;
     }
@@ -922,7 +925,10 @@ export default function Home() {
       });
 
       if (downloadAfter) {
-        triggerBrowserDownload(`${backendOrigin}${payload.asset.downloadUrl}`);
+        const downloadUrl = payload.asset.downloadUrl.startsWith("http")
+          ? payload.asset.downloadUrl
+          : `${backendOrigin}${payload.asset.downloadUrl}`;
+        triggerBrowserDownload(downloadUrl);
       }
     } catch (error) {
       setSaveState({

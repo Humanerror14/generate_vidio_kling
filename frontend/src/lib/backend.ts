@@ -108,6 +108,7 @@ export async function callFreepik(
 
   const response = await fetch(`${freepikBaseUrl}${pathname}`, {
     ...options,
+    cache: "no-store",
     headers: {
       "Content-Type": "application/json",
       "x-freepik-api-key": apiKey,
