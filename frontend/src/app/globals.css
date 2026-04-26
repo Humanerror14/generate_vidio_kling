@@ -364,13 +364,13 @@ video {
 .stage-topbar,
 .stage-caption {
   position: absolute;
-  left: 20px;
-  right: 20px;
   z-index: 2;
 }
 
 .stage-topbar {
   top: 20px;
+  left: 20px;
+  right: 20px;
   gap: 12px;
 }
 
@@ -445,23 +445,31 @@ video {
 
 .stage-caption {
   bottom: 20px;
-  gap: 16px;
-  justify-content: flex-start;
-  padding: 16px 18px;
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  left: 20px;
+  max-width: 320px;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(7, 11, 17, 0.4);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stage-caption:hover {
   background: rgba(7, 11, 17, 0.8);
-  backdrop-filter: blur(14px);
+  max-width: 400px;
+  transform: translateY(-5px);
 }
 
 .stage-caption__icon {
-  width: 46px;
-  height: 46px;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
   color: #ffd2aa;
 }
 
