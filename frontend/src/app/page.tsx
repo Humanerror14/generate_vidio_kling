@@ -183,6 +183,11 @@ type SaveState = {
   error: string | null;
 };
 
+type UploadingState = {
+  image: boolean;
+  video: boolean;
+};
+
 function getBackendOrigin(baseUrl: string) {
   if (baseUrl.startsWith("/")) {
     return typeof window !== "undefined" ? window.location.origin : "";
@@ -388,6 +393,7 @@ export default function Home() {
   });
   const [uploadedStartImage, setUploadedStartImage] =
     useState<UploadedImage | null>(null);
+  const [isUploading, setIsUploading] = useState<UploadingState>({ image: false, video: false });
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isDraggingUpload, setIsDraggingUpload] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -642,14 +648,17 @@ export default function Home() {
     }
 
     try {
-      // 1. Upload to Supabase Storage first to get a URL
+      setIsUploading(prev => ({ ...prev, image: true }));
+      setUploadError(null);
+      console.log("Uploading image to Supabase Storage...");
+      
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
       const filePath = `temp/${fileName}`;
 
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('videos')
-        .upload(filePath, file);
+        .upload(filePath, file, { contentType: file.type, upsert: true });
 
       if (uploadError) throw uploadError;
 
@@ -667,10 +676,11 @@ export default function Home() {
         ...current,
         startImageUrl: publicUrl, // Set the URL directly
       }));
-    } catch (error) {
-      setUploadError(
-        error instanceof Error ? error.message : "Gagal memuat gambar."
-      );
+    } catch (error: any) {
+      console.error("Image upload failed:", error);
+      setUploadError(`Gagal upload gambar: ${error.message || "Error tidak dikenal"}`);
+    } finally {
+      setIsUploading(prev => ({ ...prev, image: false }));
     }
   }
 
@@ -715,14 +725,17 @@ export default function Home() {
     }
 
     try {
-      console.log("Uploading video to Supabase...");
+      setIsUploading(prev => ({ ...prev, video: true }));
+      setUploadError(null);
+      console.log("Uploading video to Supabase Storage bucket 'videos'...");
+      
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
       const filePath = `temp/${fileName}`;
 
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('videos')
-        .upload(filePath, file);
+        .upload(filePath, file, { contentType: file.type, upsert: true });
 
       if (uploadError) throw uploadError;
 
@@ -742,9 +755,11 @@ export default function Home() {
         ...current,
         videoReferenceUrl: publicUrl,
       }));
-    } catch (error) {
-      console.error("Video upload error:", error);
-      setUploadError("Gagal memuat video.");
+    } catch (error: any) {
+      console.error("Video upload failed:", error);
+      setUploadError(`Gagal upload video: ${error.message || "Error tidak dikenal"}`);
+    } finally {
+      setIsUploading(prev => ({ ...prev, video: false }));
     }
   }
 
@@ -803,14 +818,12 @@ export default function Home() {
           aspectRatio: form.aspectRatio,
           duration: form.duration,
           generateAudio: form.generateAudio,
-          startImageUrl: form.startImageUrl,
+          startImageUrl: form.startImageUrl || uploadedStartImage?.dataUrl || "",
           endImageUrl: form.endImageUrl,
-          localStartImageDataUrl: uploadedStartImage?.dataUrl ?? "",
           webhookUrl: form.webhookUrl,
           cfgScale: form.cfgScale,
           cameraControl: form.cameraControl !== "none" ? { type: form.cameraControl, value: 1.0 } : undefined,
-          videoReferenceUrl: form.videoReferenceUrl,
-          localVideoReferenceDataUrl: uploadedVideoReference?.dataUrl ?? "",
+          videoReferenceUrl: form.videoReferenceUrl || uploadedVideoReference?.dataUrl || "",
           motionStrength: form.motionStrength,
           referenceMode: form.referenceMode,
           characterOrientation: form.characterOrientation,

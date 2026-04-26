@@ -28,6 +28,7 @@ interface MotionControlFormProps {
   onVideoClear: () => void;
   onFormChange: (updates: Record<string, unknown>) => void;
   uploadError: string | null;
+  isUploading?: boolean;
 }
 
 export function MotionControlForm({
@@ -41,6 +42,7 @@ export function MotionControlForm({
   onVideoClear,
   onFormChange,
   uploadError,
+  isUploading = false,
 }: MotionControlFormProps) {
   const videoInputRef = useRef<HTMLInputElement>(null);
 
@@ -124,11 +126,20 @@ export function MotionControlForm({
             </div>
           ) : (
             <div className="space-y-2">
-              <Upload size={24} className="mx-auto text-slate-500 group-hover:text-orange-400 transition-colors" />
-              <p className="text-sm font-medium text-slate-300">
-                Upload Motion Reference
-              </p>
-              <p className="text-xs text-slate-500">MP4, MOV up to 20MB</p>
+              {isUploading ? (
+                <>
+                  <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                  <p className="text-sm font-medium text-orange-400">Uploading to storage...</p>
+                </>
+              ) : (
+                <>
+                  <Upload size={24} className="mx-auto text-slate-500 group-hover:text-orange-400 transition-colors" />
+                  <p className="text-sm font-medium text-slate-300">
+                    Upload Motion Reference
+                  </p>
+                  <p className="text-xs text-slate-500">MP4, MOV up to 20MB</p>
+                </>
+              )}
             </div>
           )}
         </div>
