@@ -492,7 +492,7 @@ export default function Home() {
   const loadRemoteTasks = async () => {
     try {
       setIsLoadingRemoteTasks(true);
-      const url = new URL(`${backendBaseUrl}/video/tasks`);
+      const url = new URL(`${backendBaseUrl}/video/tasks`, window.location.origin);
       url.searchParams.append("model", form.model);
       if (apiKey) {
         url.searchParams.append("apiKey", apiKey);
@@ -519,7 +519,7 @@ export default function Home() {
   };
 
   async function requestTaskStatus(taskId: string, model: ModelId, customApiKey?: string) {
-    const url = new URL(`${backendBaseUrl}/video/tasks/${taskId}`);
+    const url = new URL(`${backendBaseUrl}/video/tasks/${taskId}`, window.location.origin);
     url.searchParams.append("model", model);
     url.searchParams.append("t", Date.now().toString()); // Cache busting
     if (customApiKey) {
