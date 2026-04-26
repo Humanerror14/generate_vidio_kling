@@ -323,11 +323,11 @@ function readFileAsDataUrl(file: File) {
         return;
       }
 
-      reject(new Error("Browser tidak bisa membaca file gambar."));
+      reject(new Error("Browser tidak bisa membaca file ini."));
     };
 
     reader.onerror = () => {
-      reject(new Error("Gagal membaca file gambar."));
+      reject(new Error("Gagal membaca file dari sistem Anda."));
     };
 
     reader.readAsDataURL(file);
@@ -704,7 +704,9 @@ export default function Home() {
     }
 
     try {
+      console.log("Reading video file:", file.name, file.size, file.type);
       const dataUrl = await readFileAsDataUrl(file);
+      console.log("Video file read successfully, length:", dataUrl.length);
       setUploadedVideoReference({
         name: file.name,
         dataUrl,
@@ -712,6 +714,7 @@ export default function Home() {
       });
       setUploadError(null);
     } catch (error) {
+      console.error("Video upload error:", error);
       setUploadError("Gagal memuat video.");
     }
   }
@@ -1442,6 +1445,34 @@ export default function Home() {
                     onChange={(e) => setForm(c => ({ ...c, duration: e.target.value }))}
                   >
                     {durationOptions.map(d => <option key={d} value={d}>{d}s</option>)}
+                  </select>
+                </div>
+                <div className="field">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">CFG Scale: {form.cfgScale.toFixed(1)}</span>
+                  <input
+                    className="range-input"
+                    max="1"
+                    min="0"
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        cfgScale: Number(event.target.value),
+                      }))
+                    }
+                    step="0.1"
+                    type="range"
+                    value={form.cfgScale}
+                  />
+                </div>
+                <div className="field">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Orientation</span>
+                  <select 
+                    className="text-input bg-white/5"
+                    value={form.characterOrientation}
+                    onChange={(e) => setForm(c => ({ ...c, characterOrientation: e.target.value as "video" | "image" }))}
+                  >
+                    <option value="video">Follow Video</option>
+                    <option value="image">Maintain Image</option>
                   </select>
                 </div>
               </div>

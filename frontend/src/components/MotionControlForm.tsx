@@ -56,7 +56,7 @@ export function MotionControlForm({
     videoInputRef.current?.click();
   };
 
-  const isMotionControlModel = model === "kling-v3-motion-pro";
+  const isMotionControlModel = model.startsWith("kling-v3");
 
   return (
     <section className="tool-panel">
@@ -72,7 +72,7 @@ export function MotionControlForm({
       <div className="space-y-4">
         <input
           type="file"
-          accept="video/*"
+          accept="video/mp4,video/quicktime,video/webm"
           className="hidden"
           ref={videoInputRef}
           onChange={handleVideoUpload}
