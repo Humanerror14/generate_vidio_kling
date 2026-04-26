@@ -1306,37 +1306,35 @@ export default function Home() {
             <section className="tool-panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Model</p>
-                  <h3>Video engine</h3>
+                  <p className="eyebrow">Engine</p>
+                  <h3>AI Model</h3>
                 </div>
                 <Clapperboard size={18} />
               </div>
 
-              <div className="model-grid">
-                {modelCatalog.map((model) => (
-                  <button
-                    key={model.id}
-                    className={`model-option${
-                      form.model === model.id ? " is-active" : ""
-                    }`}
-                    onClick={() => void handleModelChange(model.id)}
-                    type="button"
-                  >
-                    <div className="model-option__header">
-                      <strong>{model.name}</strong>
-                      <span>{model.badge}</span>
-                    </div>
-                    <p>{model.description}</p>
-                  </button>
-                ))}
+              <div className="field">
+                <select 
+                  className="text-input appearance-none bg-white/5 cursor-pointer"
+                  value={form.model}
+                  onChange={(e) => void handleModelChange(e.target.value as ModelId)}
+                >
+                  {modelCatalog.map((model) => (
+                    <option key={model.id} value={model.id} className="bg-[#1a1c23]">
+                      {model.name} — {model.badge}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-2 text-xs text-slate-500">
+                  {selectedModel.description}
+                </p>
               </div>
             </section>
 
             <section className="tool-panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Input</p>
-                  <h3>Reference image</h3>
+                  <p className="eyebrow">Reference</p>
+                  <h3>Source image</h3>
                 </div>
                 <ImagePlus size={18} />
               </div>
@@ -1384,8 +1382,8 @@ export default function Home() {
                   <>
                     <Upload size={26} />
                     <div className="dropzone__body">
-                      <strong>Upload atau drag gambar</strong>
-                      <span>PNG, JPG, WEBP sampai 10MB</span>
+                      <strong>Upload gambar karakter</strong>
+                      <span>PNG, JPG sampai 10MB</span>
                     </div>
                   </>
                 )}
@@ -1393,108 +1391,62 @@ export default function Home() {
 
               {uploadedStartImage ? (
                 <div className="inline-actions">
-                  <span className="inline-tag">Local upload active</span>
                   <button className="button-ghost" onClick={clearUploadedImage} type="button">
                     <Trash2 size={16} />
-                    Hapus image
+                    Ganti gambar
                   </button>
                 </div>
-              ) : null}
-
-              <label className="field">
-                <span>Start image URL</span>
-                <input
-                  className="text-input"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      startImageUrl: event.target.value,
-                    }))
-                  }
-                  placeholder="https://..."
-                  type="url"
-                  value={form.startImageUrl}
-                />
-              </label>
-
-              <label className="field">
-                <span>End image URL</span>
-                <input
-                  className="text-input"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      endImageUrl: event.target.value,
-                    }))
-                  }
-                  placeholder="https://..."
-                  type="url"
-                  value={form.endImageUrl}
-                />
-              </label>
-
-              <p className="panel-note">
-                Upload lokal otomatis berpindah ke model <strong>Runway 4.5 Image</strong>.
-                Jika ingin prompt-only atau URL-only, pilih model lain secara manual.
-              </p>
+              ) : (
+                <label className="field">
+                  <input
+                    className="text-input text-xs"
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        startImageUrl: event.target.value,
+                      }))
+                    }
+                    placeholder="Atau masukkan URL gambar..."
+                    type="url"
+                    value={form.startImageUrl}
+                  />
+                </label>
+              )}
             </section>
 
             <section className="tool-panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Output</p>
-                  <h3>Render settings</h3>
+                  <p className="eyebrow">Settings</p>
+                  <h3>Advanced</h3>
                 </div>
                 <Volume2 size={18} />
               </div>
 
-              <div className="choice-group">
-                <span>Aspect ratio</span>
-                <div className="choice-row">
-                  {aspectRatioOptions.map((ratio) => (
-                    <button
-                      key={ratio}
-                      className={`choice-chip${
-                        form.aspectRatio === ratio ? " is-active" : ""
-                      }`}
-                      onClick={() =>
-                        setForm((current) => ({
-                          ...current,
-                          aspectRatio: ratio,
-                        }))
-                      }
-                      type="button"
-                    >
-                      {ratio}
-                    </button>
-                  ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="choice-group">
+                  <span>Ratio</span>
+                  <select 
+                    className="text-input bg-white/5 text-sm"
+                    value={form.aspectRatio}
+                    onChange={(e) => setForm(c => ({ ...c, aspectRatio: e.target.value as AspectRatio }))}
+                  >
+                    {aspectRatioOptions.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                </div>
+                <div className="choice-group">
+                  <span>Duration</span>
+                  <select 
+                    className="text-input bg-white/5 text-sm"
+                    value={form.duration}
+                    onChange={(e) => setForm(c => ({ ...c, duration: e.target.value }))}
+                  >
+                    {durationOptions.map(d => <option key={d} value={d}>{d}s</option>)}
+                  </select>
                 </div>
               </div>
 
-              <div className="choice-group">
-                <span>Duration</span>
-                <div className="choice-row">
-                  {durationOptions.map((duration) => (
-                    <button
-                      key={duration}
-                      className={`choice-chip${
-                        form.duration === duration ? " is-active" : ""
-                      }`}
-                      onClick={() =>
-                        setForm((current) => ({
-                          ...current,
-                          duration,
-                        }))
-                      }
-                      type="button"
-                    >
-                      {duration}s
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="choice-group mt-8 pt-8 border-t border-white/5">
+              <div className="mt-4 pt-4 border-t border-white/5">
                 <MotionControlForm
                   uploadedVideoReference={uploadedVideoReference}
                   videoReferenceUrl={form.videoReferenceUrl}
@@ -1516,91 +1468,6 @@ export default function Home() {
                   uploadError={uploadError}
                 />
               </div>
-              <div className="choice-group">
-                <span>Camera control</span>
-                <div className="choice-row">
-                  {cameraControlOptions.map((opt) => (
-                    <button
-                      key={opt.id}
-                      className={`px-3 py-2 rounded-xl border text-sm transition-all ${
-                        form.cameraControl === opt.id
-                          ? "bg-orange-500/20 border-orange-500 text-orange-200"
-                          : "bg-white/5 border-white/10 text-slate-400 hover:border-white/20"
-                      }`}
-                      onClick={() =>
-                        setForm((current) => ({
-                          ...current,
-                          cameraControl: opt.id,
-                        }))
-                      }
-                      type="button"
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="toggle-row">
-                <div>
-                  <span>Generate audio</span>
-                  <small>
-                    {form.model === "runway-4-5-i2v"
-                      ? "Nonaktif di mode Runway image-to-video."
-                      : "Aktifkan jika ingin audio native dari model."}
-                  </small>
-                </div>
-                <button
-                  className={`toggle${
-                    form.generateAudio && form.model !== "runway-4-5-i2v"
-                      ? " is-on"
-                      : ""
-                  }`}
-                  disabled={form.model === "runway-4-5-i2v"}
-                  onClick={() =>
-                    setForm((current) => ({
-                      ...current,
-                      generateAudio: !current.generateAudio,
-                    }))
-                  }
-                  type="button"
-                >
-                  <span />
-                </button>
-              </div>
-
-              <label className="field">
-                <span>Negative prompt</span>
-                <textarea
-                  className="text-area"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      negativePrompt: event.target.value,
-                    }))
-                  }
-                  rows={4}
-                  value={form.negativePrompt}
-                />
-              </label>
-
-              <label className="field">
-                <span>CFG scale: {form.cfgScale.toFixed(1)}</span>
-                <input
-                  className="range-input"
-                  max="1"
-                  min="0"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      cfgScale: Number(event.target.value),
-                    }))
-                  }
-                  step="0.1"
-                  type="range"
-                  value={form.cfgScale}
-                />
-              </label>
             </section>
           </div>
         </section>
