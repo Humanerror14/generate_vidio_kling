@@ -40,13 +40,7 @@ export async function POST(request: NextRequest) {
       apiKey,
     } = body || {};
 
-    const requestedModel = getModelConfig(model);
-    const shouldUseRunwayUpload =
-      typeof localStartImageDataUrl === "string" &&
-      localStartImageDataUrl.startsWith("data:image/");
-    const selectedModel = shouldUseRunwayUpload
-      ? modelRegistry["runway-4-5-i2v"]
-      : requestedModel;
+    const selectedModel = getModelConfig(model);
 
     if (typeof prompt !== "string" || prompt.trim().length === 0) {
       return NextResponse.json(
@@ -83,12 +77,7 @@ export async function POST(request: NextRequest) {
     let payload: Record<string, unknown>;
 
     if (selectedModel.mode === "runway-image") {
-      const imageInput =
-        shouldUseRunwayUpload && typeof localStartImageDataUrl === "string"
-          ? localStartImageDataUrl
-          : typeof startImageUrl === "string" && startImageUrl.trim()
-          ? startImageUrl.trim()
-          : "";
+      const imageInput = (localStartImageDataUrl || startImageUrl || "").toString().trim();
       if (!imageInput) {
         return NextResponse.json(
           { error: "Upload atau URL gambar sumber wajib diisi untuk mode Runway." },
@@ -103,9 +92,12 @@ export async function POST(request: NextRequest) {
         webhook_url: typeof webhookUrl === "string" && webhookUrl.trim() ? webhookUrl.trim() : undefined,
       };
     } else if (selectedModel.mode === "kling-motion") {
-      const videoRef = (videoReferenceUrl || localVideoReferenceDataUrl || "").trim();
-      const imageInput = localStartImageDataUrl || startImageUrl || "";
-      if (!videoRef || !imageInput) {
+      const imageInput = (localStartImageDataUrl || startImageUrl || "").toString().trim();
+      const videoRef = (localVideoReferenceDataUrl || videoReferenceUrl || "").toString().trim();
+      
+      console.log("Backend Motion Control Debug:", { model, imageInput: imageInput.slice(0, 100), videoRef: videoRef.slice(0, 100) });
+
+      if (!imageInput || !videoRef) {
         return NextResponse.json(
           { error: "Motion Control Pro memerlukan gambar karakter dan video referensi." },
           { status: 400 }

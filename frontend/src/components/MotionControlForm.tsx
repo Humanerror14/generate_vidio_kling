@@ -87,30 +87,40 @@ export function MotionControlForm({
           }`}
         >
           {uploadedVideoReference ? (
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400">
-                  <Film size={24} />
+            <div className="flex flex-col w-full gap-3">
+              <div className="relative aspect-video w-full bg-black rounded-xl overflow-hidden border border-white/10">
+                <video 
+                  src={uploadedVideoReference.dataUrl} 
+                  className="w-full h-full object-cover"
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                />
+                <div className="absolute top-2 right-2 flex gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onVideoClear();
+                    }}
+                    className="p-2 bg-black/60 hover:bg-red-500/80 backdrop-blur-md rounded-lg text-white transition-colors"
+                    type="button"
+                    title="Remove video"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-white truncate max-w-[180px]">
+              </div>
+              <div className="flex items-center gap-3 px-1">
+                <div className="flex-1 text-left">
+                  <p className="text-xs font-bold text-white truncate">
                     {uploadedVideoReference.name}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-[10px] text-slate-500">
                     {uploadedVideoReference.sizeLabel}
                   </p>
                 </div>
               </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onVideoClear();
-                }}
-                className="p-2 hover:bg-red-500/20 rounded-lg text-slate-400 hover:text-red-400 transition-colors z-10"
-                type="button"
-              >
-                <Trash2 size={16} />
-              </button>
             </div>
           ) : (
             <div className="space-y-2">
