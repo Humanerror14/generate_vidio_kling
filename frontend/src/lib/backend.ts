@@ -143,7 +143,7 @@ export async function readAssetRecords(): Promise<AssetRecord[]> {
     return [];
   }
 
-  return (data || []).map(record => ({
+  return (data || []).map((record: any) => ({
     ...record,
     savedAt: record.saved_at,
     taskId: record.task_id,
