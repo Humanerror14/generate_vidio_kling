@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import { deleteAssetRecord } from "@/lib/backend";
 
 export async function DELETE(

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 import { readAssetRecords, sanitizeAssetRecord } from "@/lib/backend";
 
 export async function GET() {
