@@ -346,6 +346,10 @@ video {
   box-shadow:
     inset 0 0 140px var(--stage-glow),
     var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .stage-backdrop {
@@ -705,6 +709,13 @@ video {
 .choice-group + .toggle-row,
 .toggle-row + .field {
   margin-top: 16px;
+}
+
+.advanced-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 8px;
 }
 
 .choice-group span {

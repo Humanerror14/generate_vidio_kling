@@ -1423,21 +1423,21 @@ export default function Home() {
                 <Volume2 size={18} />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="choice-group">
-                  <span>Ratio</span>
+              <div className="advanced-grid">
+                <div className="field">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Aspect Ratio</span>
                   <select 
-                    className="text-input bg-white/5 text-sm"
+                    className="text-input bg-white/5"
                     value={form.aspectRatio}
                     onChange={(e) => setForm(c => ({ ...c, aspectRatio: e.target.value as AspectRatio }))}
                   >
                     {aspectRatioOptions.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
-                <div className="choice-group">
-                  <span>Duration</span>
+                <div className="field">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold">Duration</span>
                   <select 
-                    className="text-input bg-white/5 text-sm"
+                    className="text-input bg-white/5"
                     value={form.duration}
                     onChange={(e) => setForm(c => ({ ...c, duration: e.target.value }))}
                   >
